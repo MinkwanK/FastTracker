@@ -25,12 +25,7 @@ If you don’t have Eigen globally installed, just include it in your project di
 include_directories(${PROJECT_SOURCE_DIR}/eigen-3.4-rc1/)
 ```
 
-### Clone or move into the project
 
-```bash
-git clone https://github.com/yourusername/FastTracker_CPP.git
-cd FastTracker_CPP/deploy/c++
-```
 ### Create and configure the build directory and make
 ```bash
 mkdir build && cd build
@@ -65,4 +60,5 @@ Then run the project (you can change dataset directory path inside `main.cpp`)
 ```bash
 ./Tracker_proj
 ```
+
 
