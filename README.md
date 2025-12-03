@@ -24,6 +24,7 @@ FastTracker is a general-purpose multi-object tracking framework designed for co
 
 | Date | Update |
 |------|---------|
+| **2025-12-03** |  Class aware motion prediction source code (import `fasttracker_cls.py` and `kalman_filter_cls.py` instead of normal ones). |
 | **2025-10-31** |  Added C++ deployment version (FastTracker_CPP). |
 | **2025-10-21** |  Added ROI and Cone handling functions source codes. |
 
@@ -357,6 +358,7 @@ If you use our code or Benchmark, please cite our work.
 
 ## Acknowledgement
 Our work is built upon [YOLOX](https://github.com/Megvii-BaseDetection/YOLOX), [ByteTrack](https://github.com/FoundationVision/ByteTrack/tree/main), [TransTrack](https://github.com/PeizeSun/TransTrack) and [TrackEval](https://github.com/JonathonLuiten/TrackEval). Highly appreciated!
+
 
 
 
