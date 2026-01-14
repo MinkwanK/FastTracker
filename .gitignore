@@ -1,9 +1,8 @@
 .DS_Store
-# Downloaded weights
-pretrained/
-*.pth
-*.pth.tar
-*.onnx
+# Downloaded weights in pretrained directory
+pretrained/*.pth
+pretrained/*.pth.tar
+pretrained/*.onnx
 # Output directories
 YOLOX_outputs/
 # Temporary files

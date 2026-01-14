@@ -68,13 +68,14 @@ def download_weights(model_name="yolox_x", output_dir="./pretrained"):
     print(f"Output: {output_file}")
     
     try:
-        # Download using wget or curl
+        # Download using urllib
         import urllib.request
         
         def reporthook(count, block_size, total_size):
-            percent = int(count * block_size * 100 / total_size)
-            sys.stdout.write(f"\rDownloading: {percent}%")
-            sys.stdout.flush()
+            if total_size > 0:
+                percent = int(count * block_size * 100 / total_size)
+                sys.stdout.write(f"\rDownloading: {percent}%")
+                sys.stdout.flush()
         
         urllib.request.urlretrieve(model_info["url"], output_file, reporthook)
         print("\n✓ Download completed successfully!")

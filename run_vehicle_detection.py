@@ -69,7 +69,7 @@ def download_weights():
     print(f"\n{model} 가중치를 다운로드합니다... (Downloading {model} weights...)")
     
     try:
-        result = subprocess.run(
+        subprocess.run(
             [sys.executable, "tools/download_coco_weights.py", "--model", model],
             check=True
         )
