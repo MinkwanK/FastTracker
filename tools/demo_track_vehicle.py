@@ -1,3 +1,24 @@
+"""
+FastTracker Vehicle Detection Demo
+
+This script demonstrates vehicle-only object detection and tracking.
+It filters detections to show only vehicles (cars, buses, trucks, motorcycles, bicycles, trains).
+
+Important Notes:
+- This demo requires a model trained on COCO classes or a multi-class dataset containing vehicle categories.
+- Standard MOT models (trained on MOT17/MOT20) only detect pedestrians and won't work with this demo.
+- For vehicle detection, you need to either:
+  1. Use a COCO-pretrained model, or
+  2. Train a custom model on a dataset with vehicle annotations (like the FastTracker benchmark)
+
+Usage examples:
+  # Video file
+  python tools/demo_track_vehicle.py video -f exps/example/mot/yolox_x_mix_det.py -c pretrained/yolox_x.pth.tar --path video.mp4 --fp16 --fuse --save_result
+  
+  # Webcam
+  python tools/demo_track_vehicle.py webcam -f exps/example/mot/yolox_x_mix_det.py -c pretrained/yolox_x.pth.tar --camid 0 --fp16 --fuse
+"""
+
 import argparse
 import os
 import os.path as osp
