@@ -43,6 +43,9 @@ IMAGE_EXT = [".jpg", ".jpeg", ".webp", ".bmp", ".png"]
 # 1: bicycle, 2: car, 3: motorcycle, 5: bus, 6: train, 7: truck
 VEHICLE_CLASSES = [1, 2, 3, 5, 6, 7]
 
+# Detection array indices
+CLASS_PRED_INDEX = 6  # Index of class prediction in detection tensor
+
 
 def make_parser():
     parser = argparse.ArgumentParser("FastTracker Vehicle Detection Demo!")
@@ -195,12 +198,11 @@ def filter_vehicle_detections(outputs):
         return outputs
     
     # Filter for vehicle classes using efficient tensor operations
-    class_ids = outputs[:, 6]  # Get class predictions (keep as tensor)
+    class_ids = outputs[:, CLASS_PRED_INDEX]  # Get class predictions
     
-    # Create mask efficiently using tensor operations
-    vehicle_mask = torch.zeros(len(class_ids), dtype=torch.bool, device=outputs.device)
-    for vehicle_class in VEHICLE_CLASSES:
-        vehicle_mask |= (class_ids == vehicle_class)
+    # Use torch.isin for efficient membership testing
+    vehicle_classes_tensor = torch.tensor(VEHICLE_CLASSES, device=outputs.device, dtype=class_ids.dtype)
+    vehicle_mask = torch.isin(class_ids, vehicle_classes_tensor)
     
     filtered = outputs[vehicle_mask]
     return filtered
