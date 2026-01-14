@@ -97,10 +97,8 @@ def get_exp_file(weight_path):
     weight_name = Path(weight_path).stem  # e.g., yolox_x_coco or yolox_x
     
     # Extract base model name (yolox_x, yolox_l, etc.)
-    if "_coco" in weight_name:
-        base_name = weight_name.replace("_coco", "")
-    else:
-        base_name = weight_name
+    # Split on '_coco' to handle both yolox_x_coco and yolox_x
+    base_name = weight_name.split("_coco")[0]
     
     exp_file = f"exps/default/{base_name}.py"
     

@@ -73,7 +73,7 @@ def download_weights(model_name="yolox_x", output_dir="./pretrained"):
         
         def reporthook(count, block_size, total_size):
             if total_size > 0:
-                percent = int(count * block_size * 100 / total_size)
+                percent = min(100, int((count * block_size * 100) // total_size))
                 sys.stdout.write(f"\rDownloading: {percent}%")
                 sys.stdout.flush()
         
