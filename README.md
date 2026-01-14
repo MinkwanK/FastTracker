@@ -340,6 +340,21 @@ Simply run:
 python tools/demo_track.py video -f exps/example/mot/yolox_x_mix_det.py -c pretrained/bytetrack_x_mot17.pth.tar --fp16 --fuse --save_result
 ```
 
+### Vehicle Detection Demo
+
+For testing vehicle detection specifically (cars, buses, trucks, motorcycles, bicycles, trains), use the dedicated vehicle tracking demo:
+
+```bash
+python tools/demo_track_vehicle.py video -f exps/default/yolox_x.py -c pretrained/yolox_x_coco.pth.tar --fp16 --fuse --save_result --path <your_video_path>
+```
+
+This script filters detections to only show and track vehicles, making it ideal for traffic monitoring and vehicle tracking applications. The script supports:
+- **Video files**: `--demo video --path <video_file>`
+- **Webcam**: `--demo webcam --camid 0`
+- **Image sequences**: `--demo image --path <image_folder>`
+
+**Important**: This demo requires a COCO-pretrained model or a custom model trained on a multi-class dataset that includes vehicle categories. Standard MOT17/MOT20 models only detect pedestrians and will NOT work with this vehicle demo.
+
 ## Citation
 If you use our code or Benchmark, please cite our work.
 
