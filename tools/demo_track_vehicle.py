@@ -75,7 +75,7 @@ def make_parser():
         "--exp_file",
         default=None,
         type=str,
-        help="pls input your expriment description file",
+        help="pls input your experiment description file",
     )
     parser.add_argument("-c", "--ckpt", default=None, type=str, help="ckpt for eval")
     parser.add_argument(
@@ -194,10 +194,13 @@ def filter_vehicle_detections(outputs):
         # No class information available, return all detections
         return outputs
     
-    # Filter for vehicle classes
-    class_ids = outputs[:, 6].cpu().numpy()  # Get class predictions
-    vehicle_mask = torch.tensor([cls_id in VEHICLE_CLASSES for cls_id in class_ids], 
-                                dtype=torch.bool, device=outputs.device)
+    # Filter for vehicle classes using efficient tensor operations
+    class_ids = outputs[:, 6]  # Get class predictions (keep as tensor)
+    
+    # Create mask efficiently using tensor operations
+    vehicle_mask = torch.zeros(len(class_ids), dtype=torch.bool, device=outputs.device)
+    for vehicle_class in VEHICLE_CLASSES:
+        vehicle_mask |= (class_ids == vehicle_class)
     
     filtered = outputs[vehicle_mask]
     return filtered
@@ -263,7 +266,7 @@ class Predictor(object):
         return outputs, img_info
 
 
-def image_demo(predictor, vis_folder, current_time, args):
+def image_demo(predictor, vis_folder, current_time, args, exp):
     if osp.isdir(args.path):
         files = get_image_list(args.path)
     else:
@@ -331,7 +334,7 @@ def image_demo(predictor, vis_folder, current_time, args):
         logger.info(f"save results to {res_file}")
 
 
-def imageflow_demo(predictor, vis_folder, current_time, args):
+def imageflow_demo(predictor, vis_folder, current_time, args, exp):
     cap = cv2.VideoCapture(args.path if args.demo == "video" else args.camid)
     width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)  # float
     height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # float
@@ -477,9 +480,9 @@ def main(exp, args):
     predictor = Predictor(model, exp, trt_file, decoder, args.device, args.fp16)
     current_time = time.localtime()
     if args.demo == "image":
-        image_demo(predictor, vis_folder, current_time, args)
+        image_demo(predictor, vis_folder, current_time, args, exp)
     elif args.demo == "video" or args.demo == "webcam":
-        imageflow_demo(predictor, vis_folder, current_time, args)
+        imageflow_demo(predictor, vis_folder, current_time, args, exp)
 
 
 if __name__ == "__main__":

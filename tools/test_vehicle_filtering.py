@@ -16,6 +16,9 @@ def test_vehicle_filtering():
     # Define vehicle classes (same as in demo_track_vehicle.py)
     VEHICLE_CLASSES = [1, 2, 3, 5, 6, 7]
     
+    # Detection format constant
+    CLASS_PRED_INDEX = 6  # Index of class prediction in detection array
+    
     # Simulate detection data
     # Format: (x1, y1, x2, y2, obj_conf, class_conf, class_pred)
     test_cases = [
@@ -80,13 +83,13 @@ def test_vehicle_filtering():
             filtered_count = 0
             filtered_classes = []
         else:
-            # Extract class IDs (column 6)
-            class_ids = [det[6] for det in test_case['detections']]
+            # Extract class IDs using the constant
+            class_ids = [det[CLASS_PRED_INDEX] for det in test_case['detections']]
             # Filter for vehicle classes
             filtered_detections = [det for det in test_case['detections'] 
-                                  if det[6] in VEHICLE_CLASSES]
+                                  if det[CLASS_PRED_INDEX] in VEHICLE_CLASSES]
             filtered_count = len(filtered_detections)
-            filtered_classes = [int(det[6]) for det in filtered_detections]
+            filtered_classes = [int(det[CLASS_PRED_INDEX]) for det in filtered_detections]
         
         print(f"  Filtered detections: {filtered_count}")
         print(f"  Filtered classes: {filtered_classes}")
