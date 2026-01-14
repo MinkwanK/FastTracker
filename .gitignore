@@ -1,1 +1,15 @@
 .DS_Store
+# Downloaded weights in pretrained directory
+pretrained/*.pth
+pretrained/*.pth.tar
+pretrained/*.onnx
+# Output directories
+YOLOX_outputs/
+# Temporary files
+*.pyc
+__pycache__/
+*.so
+*.egg-info/
+dist/
+build/
+.eggs/
