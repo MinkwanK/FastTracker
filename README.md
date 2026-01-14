@@ -20,6 +20,20 @@
 
 FastTracker is a general-purpose multi-object tracking framework designed for complex traffic scenes. FastTracker supports diverse object types—especially vehicles—and maintains identity through heavy occlusion and complex motion. It combines an occlusion-aware re-identification module with road-structure-aware tracklet refinement, using semantic priors like lanes and crosswalks for better trajectory accuracy. _[Hamidreza Hashempoor](https://hamidreza-hashempoor.github.io/),  Yu Dong Hwang_.
 
+## 🚀 Quick Start: Vehicle Detection
+
+**Want to quickly detect vehicles in a video? Try this:**
+
+```bash
+# Using webcam (easiest)
+python run_vehicle_detection.py
+
+# Using video file
+python run_vehicle_detection.py --video your_video.mp4
+```
+
+📖 **[한국어 가이드 (Korean Guide)](VEHICLE_DETECTION_KR.md)** | **[Detailed Instructions](#vehicle-detection-demo)**
+
 ##  Updates
 
 | Date | Update |
@@ -342,18 +356,89 @@ python tools/demo_track.py video -f exps/example/mot/yolox_x_mix_det.py -c pretr
 
 ### Vehicle Detection Demo
 
-For testing vehicle detection specifically (cars, buses, trucks, motorcycles, bicycles, trains), use the dedicated vehicle tracking demo:
+For testing vehicle detection specifically (cars, buses, trucks, motorcycles, bicycles, trains), FastTracker provides an easy-to-use vehicle tracking demo.
+
+#### Quick Start (Recommended)
+
+The easiest way to get started with vehicle detection:
 
 ```bash
-python tools/demo_track_vehicle.py video -f exps/default/yolox_x.py -c pretrained/yolox_x_coco.pth.tar --fp16 --fuse --save_result --path <your_video_path>
+# Download COCO weights and run with webcam (interactive setup)
+python run_vehicle_detection.py
+
+# Or directly with a video file
+python run_vehicle_detection.py --video path/to/video.mp4 --save
 ```
 
-This script filters detections to only show and track vehicles, making it ideal for traffic monitoring and vehicle tracking applications. The script supports:
-- **Video files**: `--demo video --path <video_file>`
-- **Webcam**: `--demo webcam --camid 0`
-- **Image sequences**: `--demo image --path <image_folder>`
+This launcher script will:
+1. Check if COCO weights are available
+2. Automatically download them if needed (with your permission)
+3. Run vehicle detection on webcam or video file
+4. Display results in real-time
 
-**Important**: This demo requires a COCO-pretrained model or a custom model trained on a multi-class dataset that includes vehicle categories. Standard MOT17/MOT20 models only detect pedestrians and will NOT work with this vehicle demo.
+#### Manual Setup
+
+If you prefer manual setup, follow these steps:
+
+**Step 1: Download COCO Pretrained Weights**
+
+```bash
+# Download yolox_x (recommended, ~378MB)
+python tools/download_coco_weights.py --model yolox_x
+
+# Or download yolox_s (smaller, faster, ~35MB)
+python tools/download_coco_weights.py --model yolox_s
+```
+
+**Step 2: Run Vehicle Detection**
+
+```bash
+# Webcam
+python tools/demo_track_vehicle.py webcam \
+    -f exps/default/yolox_x.py \
+    -c pretrained/yolox_x_coco.pth \
+    --camid 0 \
+    --fp16 \
+    --fuse \
+    --save_result
+
+# Video file
+python tools/demo_track_vehicle.py video \
+    -f exps/default/yolox_x.py \
+    -c pretrained/yolox_x_coco.pth \
+    --path path/to/video.mp4 \
+    --fp16 \
+    --fuse \
+    --save_result
+
+# Image sequence
+python tools/demo_track_vehicle.py image \
+    -f exps/default/yolox_x.py \
+    -c pretrained/yolox_x_coco.pth \
+    --path path/to/images/ \
+    --fp16 \
+    --fuse \
+    --save_result
+```
+
+#### Supported Input Types
+
+The script supports:
+- **Webcam**: Real-time detection from your camera
+- **Video files**: `.mp4`, `.avi`, etc.
+- **Image sequences**: Folder containing sequential images
+
+#### Important Notes
+
+⚠️ **Do NOT use MOT17/MOT20 weights for vehicle detection!**
+- `bytetrack_x_mot17.pth.tar` and `bytetrack_x_mot20.pth.tar` only detect pedestrians
+- For vehicle detection, you **must** use COCO-pretrained weights
+
+✅ **Use COCO weights:**
+- Download with: `python tools/download_coco_weights.py`
+- Or use the quick launcher: `python run_vehicle_detection.py`
+
+📖 **For detailed Korean instructions, see [VEHICLE_DETECTION_KR.md](VEHICLE_DETECTION_KR.md)**
 
 ## Citation
 If you use our code or Benchmark, please cite our work.
